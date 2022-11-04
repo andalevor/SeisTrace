@@ -12,7 +12,7 @@
  * \struct SeisTrace
  * \brief Main type for seismic trace.
  */
-typedef struct SeisTrace SeisTrace;
+typedef struct SeisTrace *SeisTrace_t;
 
 /**
  * \enum TRACE_HEADER_VALUE
@@ -26,7 +26,7 @@ typedef enum {INT, REAL} SEIS_TRACE_HEADER_VALUE;
  * \param samp_num Number of samples in created trace.
  * \return Pointer to SeisTrace.
  */
-SeisTrace* seis_trace_new(long long samp_num);
+SeisTrace_t seis_trace_new(long long samp_num);
 
 /**
  * \fn seis_trace_ref
@@ -34,24 +34,35 @@ SeisTrace* seis_trace_new(long long samp_num);
  * \param t Pointer to SeisTrace object.
  * \return Pointer to SeisTrace object.
  */
-SeisTrace* seis_trace_ref(SeisTrace *t);
+SeisTrace_t seis_trace_ref(SeisTrace_t t);
 
 /**
  * \fn seis_trace_unref
  * \brief Frees memory.
  * \param t Pointer to SeisTrace object.
  */
-void seis_trace_unref(SeisTrace *t);
+void seis_trace_unref(SeisTrace_t t);
 
 /**
  * \fn
- * \brief Gives access to header value.
+ * \brief Could be used to check presence of header value.
+ * \param t Pointer to SeisTrace object.
+ * \param hdr_name Trace header name to check.
+ * \param type Type of header value. Should corresponds to written type.
+ * \return Pointer to value or NULL if there no such value.
+ */
+void *seis_trace_header_find(SeisTrace_t t, char *hdr_name,
+							 SEIS_TRACE_HEADER_VALUE type);
+
+/**
+ * \fn
+ * \brief Gives access to header value or creates it.
  * \param t Pointer to SeisTrace object.
  * \param hdr_name Trace header name to get access.
- * \param type Type of header value. Should corresponds to written type;
- * \return Pointer to value or NULL on type error.
+ * \param type Type of header value. Should corresponds to written type.
+ * \return Pointer to value can not be NULL.
  */
-void* seis_trace_header_value(SeisTrace *t, char *hdr_name,
+void *seis_trace_header_value(SeisTrace_t t, char *hdr_name,
 							  SEIS_TRACE_HEADER_VALUE type);
 
 /**
@@ -61,6 +72,6 @@ void* seis_trace_header_value(SeisTrace *t, char *hdr_name,
  * \param s Pointer to assign samples.
  * \param num Number of samples.
  */
-void seis_trace_get_samples(SeisTrace *t, double **s, long long *num);
+void seis_trace_get_samples(SeisTrace_t t, double **s, long long *num);
 
 #endif /* SEIS_TRACE */
