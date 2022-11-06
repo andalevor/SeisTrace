@@ -15,12 +15,6 @@
 typedef struct SeisTrace *SeisTrace_t;
 
 /**
- * \enum TRACE_HEADER_VALUE
- * \brief Used to set type of header value
- */
-typedef enum {INT, REAL} SEIS_TRACE_HEADER_VALUE;
-
-/**
  * \fn seis_trace_new
  * \brief Creates new SeisTrace object.
  * \param samp_num Number of samples in created trace.
@@ -44,26 +38,40 @@ SeisTrace_t seis_trace_ref(SeisTrace_t t);
 void seis_trace_unref(SeisTrace_t t);
 
 /**
- * \fn
- * \brief Could be used to check presence of header value.
+ * \fn seis_trace_header_set_int
+ * \brief Sets integer trace header value.
  * \param t Pointer to SeisTrace object.
- * \param hdr_name Trace header name to check.
- * \param type Type of header value. Should corresponds to written type.
- * \return Pointer to value or NULL if there no such value.
+ * \param hdr_name Trace header name to set value.
+ * \param val Value to set.
  */
-void *seis_trace_header_find(SeisTrace_t t, char *hdr_name,
-							 SEIS_TRACE_HEADER_VALUE type);
+void seis_trace_header_set_int(SeisTrace_t t, char *hdr_name, long long val);
 
 /**
- * \fn
- * \brief Gives access to header value or creates it.
+ * \fn seis_trace_header_set_real
+ * \brief Sets real trace header value.
  * \param t Pointer to SeisTrace object.
- * \param hdr_name Trace header name to get access.
- * \param type Type of header value. Should corresponds to written type.
- * \return Pointer to value can not be NULL.
+ * \param hdr_name Trace header name to set value.
+ * \param val Value to set.
  */
-void *seis_trace_header_value(SeisTrace_t t, char *hdr_name,
-							  SEIS_TRACE_HEADER_VALUE type);
+void seis_trace_header_set_real(SeisTrace_t t, char *hdr_name, double val);
+
+/**
+ * \fn seis_trace_header_get_int
+ * \brief Gets trace header value.
+ * \param t Pointer to SeisTrace object.
+ * \param hdr_name Trace header name to get value.
+ * \return Pointer to trace header value or NULL if no such header name.
+ */
+long long *seis_trace_header_get_int(SeisTrace_t t, char *hdr_name);
+
+/**
+ * \fn seis_trace_header_get_real
+ * \brief Gets trace header value.
+ * \param t Pointer to SeisTrace object.
+ * \param hdr_name Trace header name to get value.
+ * \return Trace header value.
+ */
+double *seis_trace_header_get_real(SeisTrace_t t, char *hdr_name);
 
 /**
  * \fn seis_trace_get_samples

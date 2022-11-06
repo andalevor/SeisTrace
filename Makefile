@@ -1,8 +1,9 @@
-TARGET = libseistrace.so
+TARGET_NAME = seistrace
 
 SDIR = src
 IDIR = include
-MLIB_DIR = extern/mlib
+TDIR = tests
+MDIR = extern/mlib
 
 ifeq ($(origin BUILD_TYPE), undefined)
 	ODIR = release
@@ -10,10 +11,10 @@ else
 	ODIR = $(BUILD_TYPE)
 endif
 
-TARGET := $(ODIR)/$(TARGET)
+TARGET := $(ODIR)/lib$(TARGET_NAME).so
 
-CFLAGS := -I$(IDIR) -I$(MLIB_DIR) --std=c99 -Wall -Wextra -Wpedantic -fpic $(CFLAGS)
-LDFLAGS = -lm -shared
+CFLAGS := -I$(IDIR) -I$(MDIR) --std=c99 -Wall -Wextra -Wpedantic -fpic $(CFLAGS)
+LDFLAGS = -shared
 
 ifeq ($(BUILD_TYPE), debug)
 	CFLAGS := -g -fsanitize=address -fsanitize=undefined $(CFLAGS)
@@ -25,6 +26,8 @@ else
 endif
 
 SRC = $(wildcard $(SDIR)/*.c)
+TSRC = $(wildcard $(TDIR)/*.c)
+BTST = $(patsubst $(TDIR)/%.c, $(ODIR)/tests/%, $(TSRC))
 DEP = $(wildcard $(IDIR)/*.h)
 OBJ = $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(SRC))
 
@@ -37,10 +40,16 @@ $(ODIR)/%.o: $(SDIR)/%.c $(DEP)
 $(TARGET): $(OBJ)
 	$(CC) $(LDFLAGS) $(OBJ) -o $(TARGET)
 
+tests: directories $(BTST)
+	$(shell LD_LIBRARY_PATH=$(ODIR) $(BTST))
+
+$(ODIR)/tests/%: $(TDIR)/%.c $(TARGET) $(DEP)
+	$(CC) $(CFLAGS) $< -o $@ -L$(ODIR) -l$(TARGET_NAME)
+
 clean:
 	@rm -rf $(ODIR)
 
 directories: $(ODIR)
 
 $(ODIR):
-	@mkdir -p $(ODIR)
+	@mkdir -p $(ODIR)/tests
