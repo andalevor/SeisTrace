@@ -31,8 +31,8 @@ SeisTrace_t seis_trace_new(long long samp_num);
 /**
  * \fn seis_trace_new
  * \brief Creates new SeisTrace object.
- * \param samp_num Number of samples in created trace.
- * \param hdr SeisTraceHeader object. Trace will own header.
+ * \param samp_num Number of samples in created trace. Can not be zero.
+ * \param hdr SeisTraceHeader object. Trace will own header. Can not be zero.
  * \return Pointer to SeisTrace or NULL if there are no free memory.
  */
 SeisTrace_t seis_trace_new_with_header(long long samp_num, SeisTraceHeader_t hdr);
