@@ -123,6 +123,7 @@ void seis_trace_header_set_int(SeisTraceHeader_t hdr, char *hdr_name,
 	val_init(v);
 	val_set_INT(v, val);
 	val_dict_set_at(hdr->dict, header_name, v);
+	string_clear(header_name);
 }
 
 void seis_trace_header_set_real(SeisTraceHeader_t hdr, char *hdr_name,
@@ -134,6 +135,7 @@ void seis_trace_header_set_real(SeisTraceHeader_t hdr, char *hdr_name,
 	val_init(v);
 	val_set_REAL(v, val);
 	val_dict_set_at(hdr->dict, header_name, v);
+	string_clear(header_name);
 }
 
 long long *seis_trace_header_get_int(SeisTraceHeader_t hdr, char *hdr_name)
