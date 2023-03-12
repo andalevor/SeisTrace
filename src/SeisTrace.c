@@ -17,23 +17,23 @@ struct SeisTraceHeader {
 
 struct SeisTrace {
 	int rc;
-	SeisTraceHeader_t header;
+	SeisTraceHeader *header;
 	double *samples;
 	long long samp_num;
 };
 
 typedef enum {INT, REAL} SEIS_TRACE_HEADER_VALUE;
 
-SeisTrace_t seis_trace_new(long long samp_num)
+SeisTrace *seis_trace_new(long long samp_num)
 {
 	assert(samp_num);
-	SeisTrace_t t = (SeisTrace_t)malloc(sizeof(struct SeisTrace));
+	SeisTrace *t = (SeisTrace *)malloc(sizeof(struct SeisTrace));
 	if (!t)
 		goto error;
-	t->header = (SeisTraceHeader_t)malloc(sizeof(struct SeisTraceHeader));
+	t->header = (SeisTraceHeader *)malloc(sizeof(struct SeisTraceHeader));
 	if (!t->header)
 		goto error;
-	t->samples = (double *)malloc(sizeof(double) * samp_num);
+	t->samples = (double *)malloc(sizeof(double) *samp_num);
 	if (!t->samples)
 		goto error;
 	t->rc = 1;
@@ -52,14 +52,14 @@ error:
 	return NULL;
 }
 
-SeisTrace_t seis_trace_new_with_header(long long samp_num, SeisTraceHeader_t hdr)
+SeisTrace *seis_trace_new_with_header(long long samp_num, SeisTraceHeader *hdr)
 {
 	assert(samp_num);
 	assert(hdr);
-	SeisTrace_t t = (SeisTrace_t)malloc(sizeof(struct SeisTrace));
+	SeisTrace *t = (SeisTrace *)malloc(sizeof(struct SeisTrace));
 	if (!t)
 		goto error;
-	t->samples = (double *)malloc(sizeof(double) * samp_num);
+	t->samples = (double *)malloc(sizeof(double) *samp_num);
 	if (!t->samples)
 		goto error;
 	t->rc = 1;
@@ -74,13 +74,13 @@ error:
 	return NULL;
 }
 
-SeisTrace_t seis_trace_ref(SeisTrace_t t)
+SeisTrace *seis_trace_ref(SeisTrace *t)
 {
 	++t->rc;
 	return t;
 }
 
-void seis_trace_unref(SeisTrace_t t)
+void seis_trace_unref(SeisTrace *t)
 {
 	if (--t->rc == 0) {
 		free(t->samples);
@@ -89,9 +89,9 @@ void seis_trace_unref(SeisTrace_t t)
 	}
 }
 
-SeisTraceHeader_t seis_trace_header_new(void)
+SeisTraceHeader *seis_trace_header_new(void)
 {
-	SeisTraceHeader_t hdr = (SeisTraceHeader_t)
+	SeisTraceHeader *hdr = (SeisTraceHeader *)
 		malloc(sizeof(struct SeisTraceHeader));
 	if (!hdr)
 		return NULL;
@@ -100,13 +100,13 @@ SeisTraceHeader_t seis_trace_header_new(void)
 	return hdr;
 }
 
-SeisTraceHeader_t seis_trace_header_ref(SeisTraceHeader_t hdr)
+SeisTraceHeader *seis_trace_header_ref(SeisTraceHeader *hdr)
 {
 	++hdr->rc;
 	return hdr;
 }
 
-void seis_trace_header_unref(SeisTraceHeader_t hdr)
+void seis_trace_header_unref(SeisTraceHeader *hdr)
 {
 	if (--hdr->rc == 0) {
 		val_dict_clear(hdr->dict);
@@ -114,7 +114,7 @@ void seis_trace_header_unref(SeisTraceHeader_t hdr)
 	}
 }
 
-void seis_trace_header_set_int(SeisTraceHeader_t hdr, char *hdr_name,
+void seis_trace_header_set_int(SeisTraceHeader *hdr, char *hdr_name,
 							   long long val)
 {
 	string_t header_name;
@@ -126,7 +126,7 @@ void seis_trace_header_set_int(SeisTraceHeader_t hdr, char *hdr_name,
 	string_clear(header_name);
 }
 
-void seis_trace_header_set_real(SeisTraceHeader_t hdr, char *hdr_name,
+void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
 							   	double val)
 {
 	string_t header_name;
@@ -138,7 +138,7 @@ void seis_trace_header_set_real(SeisTraceHeader_t hdr, char *hdr_name,
 	string_clear(header_name);
 }
 
-long long *seis_trace_header_get_int(SeisTraceHeader_t hdr, char *hdr_name)
+long long *seis_trace_header_get_int(SeisTraceHeader *hdr, char *hdr_name)
 {
 	string_t header_name;
 	string_init_set_str(header_name, hdr_name);
@@ -149,7 +149,7 @@ long long *seis_trace_header_get_int(SeisTraceHeader_t hdr, char *hdr_name)
 		return NULL;
 }
 
-double *seis_trace_header_get_real(SeisTraceHeader_t hdr, char *hdr_name)
+double *seis_trace_header_get_real(SeisTraceHeader *hdr, char *hdr_name)
 {
 	string_t header_name;
 	string_init_set_str(header_name, hdr_name);
@@ -160,12 +160,12 @@ double *seis_trace_header_get_real(SeisTraceHeader_t hdr, char *hdr_name)
 		return NULL;
 }
 
-double *seis_trace_get_samples(SeisTrace_t t)
+double *seis_trace_get_samples(SeisTrace *t)
 {
 	return t->samples;
 }
 
-long long seis_trace_get_samples_num(SeisTrace_t t)
+long long seis_trace_get_samples_num(SeisTrace *t)
 {
 	return t->samp_num;
 }

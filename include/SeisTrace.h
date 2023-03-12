@@ -12,13 +12,13 @@
  * \struct SeisTrace
  * \brief Main type for seismic trace.
  */
-typedef struct SeisTrace *SeisTrace_t;
+typedef struct SeisTrace SeisTrace;
 
 /**
  * \struct SeisTraceHeader
  * \brief Type for seismic trace header
  */
-typedef struct SeisTraceHeader *SeisTraceHeader_t;
+typedef struct SeisTraceHeader SeisTraceHeader;
 
 /**
  * \fn seis_trace_new
@@ -26,7 +26,7 @@ typedef struct SeisTraceHeader *SeisTraceHeader_t;
  * \param samp_num Number of samples in created trace. Can not be zero.
  * \return Pointer to SeisTrace or NULL if there are no free memory.
  */
-SeisTrace_t seis_trace_new(long long samp_num);
+SeisTrace *seis_trace_new(long long samp_num);
 
 /**
  * \fn seis_trace_new
@@ -35,7 +35,7 @@ SeisTrace_t seis_trace_new(long long samp_num);
  * \param hdr SeisTraceHeader object. Trace will own header. Can not be zero.
  * \return Pointer to SeisTrace or NULL if there are no free memory.
  */
-SeisTrace_t seis_trace_new_with_header(long long samp_num, SeisTraceHeader_t hdr);
+SeisTrace *seis_trace_new_with_header(long long samp_num, SeisTraceHeader *hdr);
 
 /**
  * \fn seis_trace_ref
@@ -43,14 +43,14 @@ SeisTrace_t seis_trace_new_with_header(long long samp_num, SeisTraceHeader_t hdr
  * \param t Pointer to SeisTrace object.
  * \return Pointer to SeisTrace object.
  */
-SeisTrace_t seis_trace_ref(SeisTrace_t trc);
+SeisTrace *seis_trace_ref(SeisTrace *trc);
 
 /**
  * \fn seis_trace_unref
  * \brief Rc decrement. Frees memory when rc = 0.
  * \param t Pointer to SeisTrace object.
  */
-void seis_trace_unref(SeisTrace_t trc);
+void seis_trace_unref(SeisTrace *trc);
 
 /**
  * \fn seis_trace_get_header
@@ -58,28 +58,28 @@ void seis_trace_unref(SeisTrace_t trc);
  * It's a part of trace. And should not be fried.
  * \param t Pointer to SeisTrace object.
  */
-SeisTraceHeader_t seis_trace_get_header(SeisTrace_t trc);
+SeisTraceHeader *seis_trace_get_header(SeisTrace *trc);
 
 /**
  * \fn seis_trace_get_samples
  * \brief Gets data samples from struct. You should not free memory.
  * \param t SeisTrace object.
  */
-double *seis_trace_get_samples(SeisTrace_t trc);
+double *seis_trace_get_samples(SeisTrace *trc);
 
 /**
  * \fn seis_trace_get_samples_num
  * \brief Gets data samples number from struct.
  * \param t SeisTrace object.
  */
-long long seis_trace_get_samples_num(SeisTrace_t trc);
+long long seis_trace_get_samples_num(SeisTrace *trc);
 
 /**
  * \fn seis_trace_header_new
  * \brief Creates new SeisTraceHeader object.
  * \return Pointer to SeisTraceHeader or NULL if there are no free memory.
  */
-SeisTraceHeader_t seis_trace_header_new(void);
+SeisTraceHeader *seis_trace_header_new(void);
 
 /**
  * \fn seis_trace_header_ref
@@ -87,14 +87,14 @@ SeisTraceHeader_t seis_trace_header_new(void);
  * \param t Pointer to SeisTraceHeader object.
  * \return Pointer to SeisTraceHeader object.
  */
-SeisTraceHeader_t seis_trace_header_ref(SeisTraceHeader_t trc);
+SeisTraceHeader *seis_trace_header_ref(SeisTraceHeader *trc);
 
 /**
  * \fn seis_trace_header_unref
  * \brief Rc decrement. Frees memory when rc = 0.
  * \param t Pointer to SeisTraceHeader object.
  */
-void seis_trace_header_unref(SeisTraceHeader_t trc);
+void seis_trace_header_unref(SeisTraceHeader *trc);
 
 /**
  * \fn seis_trace_header_set_int
@@ -103,7 +103,7 @@ void seis_trace_header_unref(SeisTraceHeader_t trc);
  * \param hdr_name Trace header name to set value.
  * \param val Value to set.
  */
-void seis_trace_header_set_int(SeisTraceHeader_t hdr, char *hdr_name,
+void seis_trace_header_set_int(SeisTraceHeader *hdr, char *hdr_name,
 							   long long val);
 
 /**
@@ -113,7 +113,7 @@ void seis_trace_header_set_int(SeisTraceHeader_t hdr, char *hdr_name,
  * \param hdr_name Trace header name to set value.
  * \param val Value to set.
  */
-void seis_trace_header_set_real(SeisTraceHeader_t hdr, char *hdr_name,
+void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
 							   	double val);
 
 /**
@@ -123,7 +123,7 @@ void seis_trace_header_set_real(SeisTraceHeader_t hdr, char *hdr_name,
  * \param hdr_name Trace header name to get value.
  * \return Pointer to trace header value or NULL if no such header name.
  */
-long long *seis_trace_header_get_int(SeisTraceHeader_t hdr, char *hdr_name);
+long long *seis_trace_header_get_int(SeisTraceHeader *hdr, char *hdr_name);
 
 /**
  * \fn seis_trace_header_get_real
@@ -132,6 +132,6 @@ long long *seis_trace_header_get_int(SeisTraceHeader_t hdr, char *hdr_name);
  * \param hdr_name Trace header name to get value.
  * \return Trace header value.
  */
-double *seis_trace_header_get_real(SeisTraceHeader_t hdr, char *hdr_name);
+double *seis_trace_header_get_real(SeisTraceHeader *hdr, char *hdr_name);
 
 #endif /* SEIS_TRACE_H */
