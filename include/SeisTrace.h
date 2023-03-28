@@ -123,7 +123,18 @@ void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
  * \param hdr_name Trace header name to get value.
  * \return Pointer to trace header value or NULL if no such header name.
  */
-long long *seis_trace_header_get_int(SeisTraceHeader *hdr, char *hdr_name);
+long long *seis_trace_header_get_int(SeisTraceHeader *hdr,
+									 char const *hdr_name);
+
+/**
+ * \fn seis_trace_header_get_cint
+ * \brief Gets trace header value.
+ * \param t Pointer to SeisTraceHeader object.
+ * \param hdr_name Trace header name to get value.
+ * \return Pointer to constant trace header value or NULL if no such header name
+ */
+long long const *seis_trace_header_get_cint(SeisTraceHeader const *hdr,
+										   	char const *hdr_name);
 
 /**
  * \fn seis_trace_header_get_real
@@ -132,6 +143,17 @@ long long *seis_trace_header_get_int(SeisTraceHeader *hdr, char *hdr_name);
  * \param hdr_name Trace header name to get value.
  * \return Trace header value.
  */
-double *seis_trace_header_get_real(SeisTraceHeader *hdr, char *hdr_name);
+double *seis_trace_header_get_real(SeisTraceHeader *hdr,
+								   char const *hdr_name);
+
+/**
+ * \fn seis_trace_header_get_creal
+ * \brief Gets trace header value.
+ * \param t Pointer to SeisTraceHeader object.
+ * \param hdr_name Trace header name to get value.
+ * \return Trace header value.
+ */
+double const *seis_trace_header_get_creal(SeisTraceHeader const *hdr,
+										  char const *hdr_name);
 
 #endif /* SEIS_TRACE_H */
