@@ -61,6 +61,14 @@ void seis_trace_unref(SeisTrace *trc);
 SeisTraceHeader *seis_trace_get_header(SeisTrace *trc);
 
 /**
+ * \fn seis_trace_get_header_const
+ * \brief Gets trace header.
+ * It's a part of trace. And should not be fried.
+ * \param t Pointer to SeisTrace object.
+ */
+SeisTraceHeader const *seis_trace_get_header_const(SeisTrace const *trc);
+
+/**
  * \fn seis_trace_get_samples
  * \brief Gets data samples from struct. You should not free memory.
  * \param t SeisTrace object.

@@ -100,6 +100,16 @@ SeisTraceHeader *seis_trace_header_new(void)
 	return hdr;
 }
 
+SeisTraceHeader *seis_trace_get_header(SeisTrace *trc)
+{
+	return trc->header;
+}
+
+SeisTraceHeader const *seis_trace_get_header_const(SeisTrace const *trc)
+{
+	return trc->header;
+}
+
 SeisTraceHeader *seis_trace_header_ref(SeisTraceHeader *hdr)
 {
 	++hdr->rc;
