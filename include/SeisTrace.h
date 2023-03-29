@@ -68,11 +68,25 @@ SeisTraceHeader *seis_trace_get_header(SeisTrace *trc);
 double *seis_trace_get_samples(SeisTrace *trc);
 
 /**
+ * \fn seis_trace_get_samples_const
+ * \brief Gets const data samples from struct. You should not free memory.
+ * \param t SeisTrace object.
+ */
+double const *seis_trace_get_samples_const(SeisTrace const *trc);
+
+/**
  * \fn seis_trace_get_samples_num
  * \brief Gets data samples number from struct.
  * \param t SeisTrace object.
  */
 long long seis_trace_get_samples_num(SeisTrace *trc);
+
+/**
+ * \fn seis_trace_get_samples_num_const
+ * \brief Gets data samples number from struct.
+ * \param t SeisTrace object.
+ */
+long long seis_trace_get_samples_num_const(SeisTrace const *trc);
 
 /**
  * \fn seis_trace_header_new
