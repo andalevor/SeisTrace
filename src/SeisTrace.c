@@ -189,7 +189,7 @@ double *seis_trace_get_samples(SeisTrace *t)
 	return t->samples;
 }
 
-long long seis_trace_get_samples_num(SeisTrace *t)
+long long seis_trace_get_samples_num(SeisTrace const *t)
 {
 	return t->samp_num;
 }
@@ -197,9 +197,4 @@ long long seis_trace_get_samples_num(SeisTrace *t)
 double const *seis_trace_get_samples_const(SeisTrace const *t)
 {
 	return t->samples;
-}
-
-long long seis_trace_get_samples_num_const(SeisTrace const *t)
-{
-	return t->samp_num;
 }
