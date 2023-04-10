@@ -148,18 +148,7 @@ void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
 	string_clear(header_name);
 }
 
-long long *seis_trace_header_get_int(SeisTraceHeader *hdr, char const *hdr_name)
-{
-	string_t header_name;
-	string_init_set_str(header_name, hdr_name);
-	val_t *v = val_dict_get(hdr->dict, header_name);
-	if (v)
-		return val_get_INT(*v);
-	else
-		return NULL;
-}
-
-long long const *seis_trace_header_get_cint(SeisTraceHeader const *hdr,
+long long const *seis_trace_header_get_int(SeisTraceHeader const *hdr,
 										   char const *hdr_name)
 {
 	string_t header_name;
@@ -171,19 +160,8 @@ long long const *seis_trace_header_get_cint(SeisTraceHeader const *hdr,
 		return NULL;
 }
 
-double *seis_trace_header_get_real(SeisTraceHeader *hdr, char const *hdr_name)
-{
-	string_t header_name;
-	string_init_set_str(header_name, hdr_name);
-	val_t *v = val_dict_get(hdr->dict, header_name);
-	if (v)
-		return val_get_REAL(*v);
-	else
-		return NULL;
-}
-
-double const *seis_trace_header_get_creal(SeisTraceHeader const *hdr,
-										  char const *hdr_name)
+double const *seis_trace_header_get_real(SeisTraceHeader const *hdr,
+										 char const *hdr_name)
 {
 	string_t header_name;
 	string_init_set_str(header_name, hdr_name);
@@ -207,4 +185,28 @@ long long seis_trace_get_samples_num(SeisTrace const *t)
 double const *seis_trace_get_samples_const(SeisTrace const *t)
 {
 	return t->samples;
+}
+
+bool seis_trace_header_is_int(SeisTraceHeader const *hdr, char const *hdr_name)
+{
+	string_t header_name;
+	string_init_set_str(header_name, hdr_name);
+	val_t *v = val_dict_get(hdr->dict, header_name);
+	return val_INT_p(*v);
+}
+
+bool seis_trace_header_is_real(SeisTraceHeader const *hdr, char const *hdr_name)
+{
+	string_t header_name;
+	string_init_set_str(header_name, hdr_name);
+	val_t *v = val_dict_get(hdr->dict, header_name);
+	return val_REAL_p(*v);
+}
+
+bool seis_trace_header_exist(SeisTraceHeader const *hdr, char const *hdr_name)
+{
+	string_t header_name;
+	string_init_set_str(header_name, hdr_name);
+	val_t *v = val_dict_get(hdr->dict, header_name);
+	return v ? true : false;
 }

@@ -1,7 +1,7 @@
 #include "SeisTrace.h"
 
 void write_samp(SeisTrace *trc);
-int read_samp(SeisTrace *trc);
+int read_samp(SeisTrace const *trc);
 
 int main(void)
 {
@@ -23,16 +23,16 @@ void write_samp(SeisTrace *trc)
 	seis_trace_unref(trc);
 }
 
-int read_samp(SeisTrace *trc)
+int read_samp(SeisTrace const *trc)
 {
 	long long samp_num = seis_trace_get_samples_num(trc);
-	double *samples = seis_trace_get_samples(trc);
+	double const *samples = seis_trace_get_samples_const(trc);
 	for (long long i = 0; i < samp_num; ++i)
 		if (samples[i] != i)
 			goto error;
-	seis_trace_unref(trc);
+	seis_trace_unref((SeisTrace*)trc);
 	return 0;
 error:
-	seis_trace_unref(trc);
+	seis_trace_unref((SeisTrace*)trc);
 	return -1;
 }
