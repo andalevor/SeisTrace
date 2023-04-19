@@ -30,15 +30,13 @@ SeisTrace *seis_trace_new(long long samp_num)
 	SeisTrace *t = (SeisTrace *)malloc(sizeof(struct SeisTrace));
 	if (!t)
 		goto error;
-	t->header = (SeisTraceHeader *)malloc(sizeof(struct SeisTraceHeader));
+	t->header = seis_trace_header_new();
 	if (!t->header)
 		goto error;
 	t->samples = (double *)malloc(sizeof(double) *samp_num);
 	if (!t->samples)
 		goto error;
 	t->rc = 1;
-	val_dict_init(t->header->dict);
-	t->header->rc = 1;
 	t->samp_num = samp_num;
 	return t;
 error:
@@ -124,7 +122,7 @@ void seis_trace_header_unref(SeisTraceHeader *hdr)
 	}
 }
 
-void seis_trace_header_set_int(SeisTraceHeader *hdr, char *hdr_name,
+void seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
 							   long long val)
 {
 	string_t header_name;
@@ -133,10 +131,11 @@ void seis_trace_header_set_int(SeisTraceHeader *hdr, char *hdr_name,
 	val_init(v);
 	val_set_INT(v, val);
 	val_dict_set_at(hdr->dict, header_name, v);
+	val_clear(v);
 	string_clear(header_name);
 }
 
-void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
+void seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
 							   	double val)
 {
 	string_t header_name;
@@ -145,6 +144,7 @@ void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
 	val_init(v);
 	val_set_REAL(v, val);
 	val_dict_set_at(hdr->dict, header_name, v);
+	val_clear(v);
 	string_clear(header_name);
 }
 
@@ -154,6 +154,7 @@ long long const *seis_trace_header_get_int(SeisTraceHeader const *hdr,
 	string_t header_name;
 	string_init_set_str(header_name, hdr_name);
 	val_t *v = val_dict_get(hdr->dict, header_name);
+	string_clear(header_name);
 	if (v)
 		return val_get_INT(*v);
 	else
@@ -166,6 +167,7 @@ double const *seis_trace_header_get_real(SeisTraceHeader const *hdr,
 	string_t header_name;
 	string_init_set_str(header_name, hdr_name);
 	val_t *v = val_dict_get(hdr->dict, header_name);
+	string_clear(header_name);
 	if (v)
 		return val_get_REAL(*v);
 	else

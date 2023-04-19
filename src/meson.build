@@ -1,4 +1,4 @@
 sources = ['SeisTrace.c']
-SeisTrace = library('SeisTrace', sources,
+SeisTrace = library('seistrace', sources,
   include_directories : inc,
   install : true)

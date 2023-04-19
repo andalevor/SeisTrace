@@ -120,7 +120,7 @@ void seis_trace_header_unref(SeisTraceHeader *trc);
  * \param hdr_name Trace header name to set value.
  * \param val Value to set.
  */
-void seis_trace_header_set_int(SeisTraceHeader *hdr, char *hdr_name,
+void seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
 							   long long val);
 
 /**
@@ -130,7 +130,7 @@ void seis_trace_header_set_int(SeisTraceHeader *hdr, char *hdr_name,
  * \param hdr_name Trace header name to set value.
  * \param val Value to set.
  */
-void seis_trace_header_set_real(SeisTraceHeader *hdr, char *hdr_name,
+void seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
 							   	double val);
 
 /**

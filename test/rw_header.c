@@ -20,6 +20,10 @@ void set_header(SeisTraceHeader *hdr)
 {
 	seis_trace_header_set_int(hdr, "FFID", I_TEST_VALUE);
 	seis_trace_header_set_real(hdr, "CDP_X", D_TEST_VALUE);
+	/** seis_trace_header_set_int(hdr, "MY VERY VERY LONG INTEGER HEADER NAME" */
+	/**                           " TO TEST MEMORY LEAKAGE", I_TEST_VALUE); */
+	/** seis_trace_header_set_real(hdr, "MY VERY VERY LONG REAL HEADER NAME" */
+	/**                           " TO TEST MEMORY LEAKAGE", D_TEST_VALUE); */
 	seis_trace_header_unref(hdr);
 }
 
@@ -31,6 +35,14 @@ int get_header(SeisTraceHeader const *hdr)
 	double const *rval = seis_trace_header_get_real(hdr, "CDP_X");
 	if (!rval || *rval != D_TEST_VALUE)
 		goto error;
+	/** ival = seis_trace_header_get_int(hdr, "MY VERY VERY LONG " */
+	/**                                  "INTEGER HEADER NAME"); */
+	/** if (!ival || *ival != I_TEST_VALUE) */
+	/**     goto error; */
+	/** rval = seis_trace_header_get_real(hdr, "MY VERY VERY LONG " */
+	/**                                   "REAL HEADER NAME"); */
+	/** if (!rval || *rval != D_TEST_VALUE) */
+	/**     goto error; */
 	seis_trace_header_unref((SeisTraceHeader*)hdr);
 	return 0;
 error:
