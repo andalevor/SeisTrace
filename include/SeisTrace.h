@@ -121,7 +121,7 @@ void seis_trace_header_unref(SeisTraceHeader *trc);
  * \param val Value to set.
  */
 void seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
-							   long long val);
+                               long long val);
 
 /**
  * \fn seis_trace_header_set_real
@@ -131,7 +131,7 @@ void seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
  * \param val Value to set.
  */
 void seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
-							   	double val);
+                                double val);
 
 /**
  * \fn seis_trace_header_get_cint
@@ -141,7 +141,7 @@ void seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
  * \return Pointer to constant trace header value or NULL if no such header name
  */
 long long const *seis_trace_header_get_int(SeisTraceHeader const *hdr,
-										   char const *hdr_name);
+                                           char const *hdr_name);
 
 /**
  * \fn seis_trace_header_get_creal
@@ -151,7 +151,7 @@ long long const *seis_trace_header_get_int(SeisTraceHeader const *hdr,
  * \return Pointer to constant trace header value or NULL if no such header name
  */
 double const *seis_trace_header_get_real(SeisTraceHeader const *hdr,
-										 char const *hdr_name);
+                                         char const *hdr_name);
 
 /**
  * \fn seis_trace_header_is_int
@@ -170,7 +170,7 @@ bool seis_trace_header_is_int(SeisTraceHeader const *hdr, char const *hdr_name);
  * \return True if real.
  */
 bool seis_trace_header_is_real(SeisTraceHeader const *hdr,
-							   char const *hdr_name);
+                               char const *hdr_name);
 
 /**
  * \fn seis_trace_header_exist
