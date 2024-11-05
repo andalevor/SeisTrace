@@ -52,7 +52,7 @@ SeisTrace *seis_trace_ref(SeisTrace *trc);
  * \brief Rc decrement. Frees memory when rc = 0.
  * \param t Pointer to SeisTrace object.
  */
-void seis_trace_unref(SeisTrace *trc);
+void seis_trace_unref(SeisTrace **trc);
 
 /**
  * \fn seis_trace_get_header
@@ -111,7 +111,7 @@ SeisTraceHeader *seis_trace_header_ref(SeisTraceHeader *trc);
  * \brief Rc decrement. Frees memory when rc = 0.
  * \param t Pointer to SeisTraceHeader object.
  */
-void seis_trace_header_unref(SeisTraceHeader *trc);
+void seis_trace_header_unref(SeisTraceHeader **trc);
 
 /**
  * \fn seis_trace_header_set_int
@@ -179,5 +179,5 @@ bool seis_trace_header_is_real(SeisTraceHeader const *hdr,
  * \param hdr_name Trace header name to check value.
  * \return True if exist.
  */
-bool seis_trace_header_exist(SeisTraceHeader const *hdr, char const *hdr_name);
+bool seis_trace_header_exists(SeisTraceHeader const *hdr, char const *hdr_name);
 #endif /* SEIS_TRACE_H */

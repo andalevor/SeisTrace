@@ -64,7 +64,7 @@ SeisTrace *seis_trace_new_with_header(long long samp_num,
         t->samp_num = samp_num;
         return t;
 error:
-        seis_trace_header_unref(hdr);
+        seis_trace_header_unref(&hdr);
         if (t) {
                 free(t);
         }
@@ -76,12 +76,14 @@ SeisTrace *seis_trace_ref(SeisTrace *t) {
         return t;
 }
 
-void seis_trace_unref(SeisTrace *t) {
-        if (--t->rc == 0) {
-                free(t->samples);
-                seis_trace_header_unref(t->header);
-                free(t);
-        }
+void seis_trace_unref(SeisTrace **t) {
+        if (*t)
+                if (--(*t)->rc == 0) {
+                        free((*t)->samples);
+                        seis_trace_header_unref(&(*t)->header);
+                        free(*t);
+                        *t = NULL;
+                }
 }
 
 SeisTraceHeader *seis_trace_header_new(void) {
@@ -105,11 +107,13 @@ SeisTraceHeader *seis_trace_header_ref(SeisTraceHeader *hdr) {
         return hdr;
 }
 
-void seis_trace_header_unref(SeisTraceHeader *hdr) {
-        if (--hdr->rc == 0) {
-                val_dict_clear(hdr->dict);
-                free(hdr);
-        }
+void seis_trace_header_unref(SeisTraceHeader **hdr) {
+        if (*hdr)
+                if (--(*hdr)->rc == 0) {
+                        val_dict_clear((*hdr)->dict);
+                        free(*hdr);
+                        *hdr = NULL;
+                }
 }
 
 void seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
@@ -184,7 +188,8 @@ bool seis_trace_header_is_real(SeisTraceHeader const *hdr,
         return val_REAL_p(*v);
 }
 
-bool seis_trace_header_exist(SeisTraceHeader const *hdr, char const *hdr_name) {
+bool seis_trace_header_exists(SeisTraceHeader const *hdr,
+                              char const *hdr_name) {
         string_t header_name;
         string_init_set_str(header_name, hdr_name);
         val_t *v = val_dict_get(hdr->dict, header_name);
