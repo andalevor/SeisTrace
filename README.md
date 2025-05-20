@@ -9,6 +9,6 @@ cd SeisTrace
 
 meson setup -Dbuildtype=release build
 
-meson compile -C build
+meson compile -C build seistrace
 
 meson install -C build
