@@ -3,12 +3,12 @@ Seismic Trace library. Needed for SeisSegy.
 
 # Build
 
-git clone --recurse-submodules https://github.com/andalevor/SeisTrace.git
+1) git clone --recurse-submodules https://github.com/andalevor/SeisTrace.git
 
-cd SeisTrace
+2) cd SeisTrace
 
-meson setup -Dbuildtype=release build
+3) meson setup -Dbuildtype=release -Db_ndebug=true build
 
-meson compile -C build seistrace
+4) meson compile -C build seistrace
 
-meson install -C build
+5) meson install -C build
