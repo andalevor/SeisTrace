@@ -23,6 +23,12 @@ typedef struct SeisTrace SeisTrace;
 typedef struct SeisTraceHeader SeisTraceHeader;
 
 /**
+ * \struct SeisTraceHeaderValue
+ * \brief Type for seismic trace header value
+ */
+typedef void *SeisTraceHeaderValue;
+
+/**
  * \fn seis_trace_new
  * \brief Creates new SeisTrace object.
  * \param samp_num Number of samples in created trace. Can not be zero.
@@ -126,7 +132,7 @@ void seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
 /**
  * \fn seis_trace_header_set_real
  * \brief Sets real trace header value.
- * \param t Pointer to SeisTraceHeader object.
+ * \param hdr Pointer to SeisTraceHeader object.
  * \param hdr_name Trace header name to set value.
  * \param val Value to set.
  */
@@ -134,50 +140,54 @@ void seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
                                 double val);
 
 /**
- * \fn seis_trace_header_get_cint
- * \brief Gets trace header value.
- * \param t Pointer to SeisTraceHeader object.
- * \param hdr_name Trace header name to get value.
- * \return Pointer to constant trace header value or NULL if no such header name
- */
-long long const *seis_trace_header_get_int(SeisTraceHeader const *hdr,
-                                           char const *hdr_name);
-
-/**
- * \fn seis_trace_header_get_creal
- * \brief Gets trace header value.
- * \param t Pointer to SeisTraceHeader object.
- * \param hdr_name Trace header name to get value.
- * \return Pointer to constant trace header value or NULL if no such header name
- */
-double const *seis_trace_header_get_real(SeisTraceHeader const *hdr,
-                                         char const *hdr_name);
-
-/**
- * \fn seis_trace_header_is_int
- * \brief Checks whether header integer or not
- * \param t Pointer to SeisTraceHeader object.
- * \param hdr_name Trace header name to check value.
- * \return True if integer.
- */
-bool seis_trace_header_is_int(SeisTraceHeader const *hdr, char const *hdr_name);
-
-/**
- * \fn seis_trace_header_is_real
- * \brief Checks whether header floating point or not
- * \param t Pointer to SeisTraceHeader object.
- * \param hdr_name Trace header name to check value.
- * \return True if real.
- */
-bool seis_trace_header_is_real(SeisTraceHeader const *hdr,
-                               char const *hdr_name);
-
-/**
  * \fn seis_trace_header_exist
  * \brief Checks whether header exist or not
- * \param t Pointer to SeisTraceHeader object.
+ * \param hdr Pointer to SeisTraceHeader object.
  * \param hdr_name Trace header name to check value.
  * \return True if exist.
  */
 bool seis_trace_header_exists(SeisTraceHeader const *hdr, char const *hdr_name);
+
+/**
+ * \fn seis_trace_header_get
+ * \brief Gets trace header value.
+ * \param hdr Pointer to SeisTraceHeader object.
+ * \param hdr_name Trace header name to get value.
+ * \return Pointer to trace header value or NULL if no such header name
+ */
+SeisTraceHeaderValue seis_trace_header_get(SeisTraceHeader const *hdr,
+                                           char const *hdr_name);
+
+/**
+ * \fn seis_trace_header_value_is_int
+ * \brief Checks whether header value is integer or not
+ * \param v Pointer to value object.
+ * \return True if integer.
+ */
+bool seis_trace_header_value_is_int(SeisTraceHeaderValue v);
+
+/**
+ * \fn seis_trace_header_value_is_real
+ * \brief Checks whether header value is floating point or not
+ * \param v Pointer to value object.
+ * \return True if real.
+ */
+bool seis_trace_header_value_is_real(SeisTraceHeaderValue v);
+
+/**
+ * \fn seis_trace_header_value_get_int
+ * \brief
+ * \param v Pointer to SeisTraceHeader object.
+ * \return Pointer to value or NULL if type is wrong
+ */
+long long const *seis_trace_header_value_get_int(SeisTraceHeaderValue v);
+
+/**
+ * \fn seis_trace_header_value_get_real
+ * \brief
+ * \param v Pointer to SeisTraceHeader object.
+ * \return Pointer to value or NULL if type is wrong
+ */
+double const *seis_trace_header_value_get_real(SeisTraceHeaderValue v);
+
 #endif /* SEIS_TRACE_H */
