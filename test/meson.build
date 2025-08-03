@@ -19,3 +19,7 @@ create_trace_with_header = executable('create_trace_with_header',
   include_directories : inc,
   link_with : SeisTrace)
 test('Test trace creation with header', create_trace_with_header)
+check_header_type = executable('check_header_type', 'check_header_type.c',
+  include_directories : inc,
+  link_with : SeisTrace)
+test('Test trace header type checking', check_header_type)

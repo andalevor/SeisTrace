@@ -148,12 +148,12 @@ double const *seis_trace_get_samples_const(SeisTrace const *t) {
         return t->samples;
 }
 
-bool seis_trace_header_is_int(SeisTraceHeaderValue v) {
+bool seis_trace_header_value_is_int(SeisTraceHeaderValue v) {
         val_t *val = (val_t *)v;
         return val_INT_p(*val);
 }
 
-bool seis_trace_header_is_real(SeisTraceHeaderValue v) {
+bool seis_trace_header_value_is_real(SeisTraceHeaderValue v) {
         val_t *val = (val_t *)v;
         return val_REAL_p(*val);
 }
