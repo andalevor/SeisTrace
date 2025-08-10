@@ -1,3 +1,5 @@
+#include <m-try.h>
+
 #include "SeisTrace.h"
 #include <assert.h>
 #include <m-dict.h>
@@ -9,6 +11,8 @@ VARIANT_DEF2(val, (INT, long long), (REAL, double))
 #define M_OPL_val_t() VARIANT_OPLIST(val, M_BASIC_OPLIST, M_BASIC_OPLIST)
 DICT_DEF2(val_dict, string_t, val_t)
 #define M_OPL_val_dict_t() DICT_OPLIST(val_dict, STRING_OPLIST, M_OPL_val_t())
+
+M_TRY_DEF_ONCE()
 
 struct SeisTraceHeader {
         int rc;
@@ -40,10 +44,7 @@ SeisTrace *seis_trace_new(long long samp_num) {
         return t;
 error:
         if (t) {
-                if (t->header) {
-                        val_dict_clear(t->header->dict);
-                        free(t->header);
-                }
+                seis_trace_header_unref(&t->header);
                 free(t);
         }
         return NULL;
@@ -91,7 +92,11 @@ SeisTraceHeader *seis_trace_header_new(void) {
             (SeisTraceHeader *)malloc(sizeof(struct SeisTraceHeader));
         if (!hdr)
                 return NULL;
-        val_dict_init(hdr->dict);
+        M_TRY(exception) { val_dict_init(hdr->dict); }
+        M_CATCH(exception, 0) {
+                free(hdr);
+                return NULL;
+        }
         hdr->rc = 1;
         return hdr;
 }
