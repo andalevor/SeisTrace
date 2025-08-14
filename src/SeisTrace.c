@@ -18,6 +18,7 @@ M_TRY_DEF_ONCE()
 struct SeisTraceHeader {
         int rc;
         val_dict_t dict;
+        SeisTraceHeaderError err;
 };
 
 struct SeisTrace {
@@ -122,8 +123,9 @@ void seis_trace_header_unref(SeisTraceHeader **hdr) {
                 }
 }
 
-int seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
-                              long long val) {
+SeisTraceHeaderErrCode seis_trace_header_set_int(SeisTraceHeader *hdr,
+                                                 char const *hdr_name,
+                                                 long long val) {
         M_TRY(exception) {
                 M_LET(header_name, STRING_OPLIST) {
                         string_set_str(header_name, hdr_name);
@@ -133,12 +135,18 @@ int seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
                         }
                 }
         }
-        M_CATCH(exception, 0) { return -1; }
-        return 0;
+        M_CATCH(exception, 0) {
+                hdr->err.code = SEIS_TRACE_ERR_NO_MEM;
+                hdr->err.message =
+                    "can not allocate memory in seis_trace_header_set_int";
+                return SEIS_TRACE_ERR_NO_MEM;
+        }
+        return SEIS_TRACE_ERR_OK;
 }
 
-int seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
-                               double val) {
+SeisTraceHeaderErrCode seis_trace_header_set_real(SeisTraceHeader *hdr,
+                                                  char const *hdr_name,
+                                                  double val) {
         M_TRY(exception) {
                 M_LET(header_name, STRING_OPLIST) {
                         string_set_str(header_name, hdr_name);
@@ -148,8 +156,13 @@ int seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
                         }
                 }
         }
-        M_CATCH(exception, 0) { return -1; }
-        return 0;
+        M_CATCH(exception, 0) {
+                hdr->err.code = SEIS_TRACE_ERR_NO_MEM;
+                hdr->err.message =
+                    "can not allocate memory in seis_trace_header_set_real";
+                return SEIS_TRACE_ERR_NO_MEM;
+        }
+        return SEIS_TRACE_ERR_OK;
 }
 
 double *seis_trace_get_samples(SeisTrace *t) { return t->samples; }
@@ -170,20 +183,7 @@ bool seis_trace_header_value_is_real(SeisTraceHeaderValue v) {
         return val_REAL_p(*val);
 }
 
-bool seis_trace_header_exists(SeisTraceHeader const *hdr,
-                              char const *hdr_name) {
-        val_t *v;
-        M_TRY(exception) {
-                M_LET(header_name, STRING_OPLIST) {
-                        string_set_str(header_name, hdr_name);
-                        v = val_dict_get(hdr->dict, header_name);
-                }
-        }
-        M_CATCH(exception, 0) { return false; }
-        return v ? true : false;
-}
-
-SeisTraceHeaderValue seis_trace_header_get(SeisTraceHeader const *hdr,
+SeisTraceHeaderValue seis_trace_header_get(SeisTraceHeader *hdr,
                                            char const *hdr_name) {
         val_t *v;
         M_TRY(exception) {
@@ -192,7 +192,12 @@ SeisTraceHeaderValue seis_trace_header_get(SeisTraceHeader const *hdr,
                         v = val_dict_get(hdr->dict, header_name);
                 }
         }
-        M_CATCH(exception, 0) { return NULL; }
+        M_CATCH(exception, 0) {
+                hdr->err.code = SEIS_TRACE_ERR_NO_MEM;
+                hdr->err.message =
+                    "can not allocate memory in seis_trace_header_get";
+                return NULL;
+        }
         if (v)
                 return v;
         else
@@ -207,4 +212,9 @@ long long const *seis_trace_header_value_get_int(SeisTraceHeaderValue v) {
 double const *seis_trace_header_value_get_real(SeisTraceHeaderValue v) {
         val_t *val = (val_t *)v;
         return val_get_REAL(*val);
+}
+
+SeisTraceHeaderError const *
+seis_trace_header_get_error(SeisTraceHeader const *hdr) {
+        return &hdr->err;
 }

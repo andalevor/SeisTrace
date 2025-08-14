@@ -29,6 +29,24 @@ typedef struct SeisTraceHeader SeisTraceHeader;
 typedef void *SeisTraceHeaderValue;
 
 /**
+ * \enum SesTraceHeaderErrCode
+ * \brief Error code to check
+ */
+typedef enum SeisTraceHeaderErrCode {
+        SEIS_TRACE_ERR_OK,
+        SEIS_TRACE_ERR_NO_MEM,
+} SeisTraceHeaderErrCode;
+
+/**
+ * \struct SeisTraceHeaderError
+ * \brief get and set operations can fail due to memmory allocation fail
+ */
+typedef struct SeisTraceHeaderError {
+        SeisTraceHeaderErrCode code;
+        char *message;
+} SeisTraceHeaderError;
+
+/**
  * \fn seis_trace_new
  * \brief Creates new SeisTrace object.
  * \param samp_num Number of samples in created trace. Can not be zero.
@@ -120,15 +138,26 @@ SeisTraceHeader *seis_trace_header_ref(SeisTraceHeader *trc);
 void seis_trace_header_unref(SeisTraceHeader **trc);
 
 /**
+ * \fn seis_trace_header_get_error
+ * \brief Gets trace headers error.
+ * It's a part of trace. And should not be fried.
+ * \param t Pointer to SeisTraceHeader object.
+ * \return constant pointer to SeisTraceHeaderError struct from header object
+ */
+SeisTraceHeaderError const *
+seis_trace_header_get_error(SeisTraceHeader const *hdr);
+
+/**
  * \fn seis_trace_header_set_int
  * \brief Sets integer trace header value.
  * \param t Pointer to SeisTraceHeader object.
  * \param hdr_name Trace header name to set value.
  * \param val Value to set.
- * \return 0 on success or -1 otherwise
+ * \return error code
  */
-int seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
-                              long long val);
+SeisTraceHeaderErrCode seis_trace_header_set_int(SeisTraceHeader *hdr,
+                                                 char const *hdr_name,
+                                                 long long val);
 
 /**
  * \fn seis_trace_header_set_real
@@ -138,17 +167,9 @@ int seis_trace_header_set_int(SeisTraceHeader *hdr, char const *hdr_name,
  * \param val Value to set.
  * \return 0 on success or -1 otherwise
  */
-int seis_trace_header_set_real(SeisTraceHeader *hdr, char const *hdr_name,
-                               double val);
-
-/**
- * \fn seis_trace_header_exist
- * \brief Checks whether header exist or not
- * \param hdr Pointer to SeisTraceHeader object.
- * \param hdr_name Trace header name to check value.
- * \return True if exist.
- */
-bool seis_trace_header_exists(SeisTraceHeader const *hdr, char const *hdr_name);
+SeisTraceHeaderErrCode seis_trace_header_set_real(SeisTraceHeader *hdr,
+                                                  char const *hdr_name,
+                                                  double val);
 
 /**
  * \fn seis_trace_header_get
@@ -157,7 +178,7 @@ bool seis_trace_header_exists(SeisTraceHeader const *hdr, char const *hdr_name);
  * \param hdr_name Trace header name to get value.
  * \return Pointer to trace header value or NULL if no such header name
  */
-SeisTraceHeaderValue seis_trace_header_get(SeisTraceHeader const *hdr,
+SeisTraceHeaderValue seis_trace_header_get(SeisTraceHeader *hdr,
                                            char const *hdr_name);
 
 /**
