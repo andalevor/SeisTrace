@@ -99,6 +99,8 @@ SeisTraceHeader *seis_trace_header_new(void) {
                 free(hdr);
                 return NULL;
         }
+        hdr->err.code = SEIS_TRACE_ERR_OK;
+        hdr->err.message = "";
         hdr->rc = 1;
         return hdr;
 }
